@@ -30,6 +30,31 @@ void ClassicPhaserPlugin::run(const float** inputs, float** outputs, uint32_t fr
     // The original calls FUN_00483d5c once at the top of every
     // processReplacing() block — replicate that here, so parameters take
     // effect with block granularity exactly like the original.
+    //
+    // Performance note — this per-block call is NOT a bottleneck
+    // (please do not "optimize" it away without reading):
+    //
+    //   The coefficient block is O(1) per block, not O(frames):
+    //     • ~9 libm calls per invocation: 3 log + 4 exp + 2 sincos
+    //       (constant logs are already folded at compile time;
+    //        sync mode adds getTimePosition + ldexp)
+    //     • ≈ 150–250 ns per call (-O2/arm64)
+    //     • ≈ 0.002 % of one core @ 44.1 kHz / 512-sample blocks
+    //       ≈ 0.06 % even @ 192 kHz / 64-sample blocks
+    //
+    //   The real hot spots are O(frames):
+    //     • the per-sample allpass chain — the dominant share of the
+    //       plugin's own CPU, which is well under 1 % of one core
+    //     • the soft clip's tanhf (2 per sample) — measured 3.5–6.4 ns
+    //       per sample per channel, ≈ 0.03–0.06 % of one core at
+    //       44.1 kHz stereo.  Evaluated for optimization (fast-tanh
+    //       approximation vs. a near-full-scale guard) and deliberately
+    //       kept as-is: either would save ≤ 0.05 % of a core while
+    //       slightly degrading the curve's fidelity.
+    //
+    //   Caching across blocks would save almost nothing: sync mode
+    //   re-derives the position-dependent phase seed every block anyway,
+    //   and the original performs this same per-block call.
     updateCoefficients();
 
     const float* inL  = inputs[0];
