@@ -142,11 +142,14 @@ void ClassicPhaserPlugin::setState(const char* /*key*/, const char* /*value*/)
 // ── Audio processing ──────────────────────────────────────────────────
 void ClassicPhaserPlugin::activate()
 {
-    // NOTICE: No need to invoke sampleRateChanged() here to reset the DSP.
-    //         Hosts are expected to call sampleRateChanged() before processing
-    //         and on sample rate changes.  If we invoked sampleRateChanged()
-    //         here, we may hear a click on play start in hosts (for example,
-    //         REAPER).
+    // Refresh DSP state and coefficients when the host activates the DSP.
+    clearDspState();
+    updateCoefficients();
+}
+
+void ClassicPhaserPlugin::deactivate()
+{
+    clearDspState();
 }
 
 void ClassicPhaserPlugin::sampleRateChanged(double newSampleRate)

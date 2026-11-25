@@ -35,6 +35,7 @@ protected:
 
     // ── Audio processing ──────────────────────────────────────────────────
     void activate() override;
+    void deactivate() override;
     void sampleRateChanged(double newSampleRate) override;
     void run(const float** inputs, float** outputs, uint32_t frames) override;
 
