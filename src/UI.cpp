@@ -200,7 +200,7 @@ void ClassicPhaserUI::onImGuiDisplay()
 
             ImGui::SameLine(0, SCALE(10));
 
-            if (_BeginSection("MODULATION", SCALE((80.0f - 8.0f) * 5 - 2.0f)))
+            if (_BeginSection("MODULATION", SCALE((80.0f - 8.0f) * 5 + 2.0f)))
             {
                 // Add an extra left margin
                 ImGui::Dummy(ImVec2(SCALE(2), 0));
@@ -218,21 +218,21 @@ void ClassicPhaserUI::onImGuiDisplay()
                 _addKnob(kParamDepth, "  DEPTH (%)", kPercentMarks, IM_ARRAYSIZE(kPercentMarks));
 
 
-                ImGui::SameLine(0.0f, SCALE(20));
+                ImGui::SameLine(0.0f, SCALE(20 - 2));
                 _addBinaryStateSwitch(kParamSpread, " SPREAD", "OFF", "ON", SCALE(6.0f), SCALE(1.0f));
 
-                ImGui::SameLine(0.0f, SCALE(20));
+                ImGui::SameLine(0.0f, SCALE(20 + 4));
                 _addKnob(kParamFeedback, "  FEEDBACK (%)", kPercentMarks, IM_ARRAYSIZE(kPercentMarks));
 
                 _EndSection();
             }
 
-            ImGui::SameLine(0, SCALE(10));
+            ImGui::SameLine(0, SCALE(10 - 4));
 
             if (_BeginSection("OUTPUT", SCALE((80.0f - 4.0f) * 2)))
             {
                 // Add an extra left margin
-                ImGui::Dummy(ImVec2(SCALE(2 + 2), 0));
+                ImGui::Dummy(ImVec2(SCALE(2), 0));
                 ImGui::SameLine();
 
                 _addKnob(kParamMix, "MIX", kMixMarks, IM_ARRAYSIZE(kMixMarks));
