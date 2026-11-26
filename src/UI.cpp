@@ -293,7 +293,7 @@ void ClassicPhaserUI::onImGuiDisplay()
                 ImGui::Dummy(ImVec2(0, SCALE(0.5f)));
 
 #else   // No extra controls, just a placeholder
-                ImGui::Dummy(ImVec2(0, SCALE(23)));     // TODO: This is a placeholder. I will add extra controls here in future.
+                ImGui::Dummy(ImVec2(0, SCALE(23)));
 #endif
 
                 _drawPluginName();

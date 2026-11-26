@@ -212,8 +212,6 @@ void ClassicPhaserUI::_drawKjaerhusLogo(const ImVec2& size)
 
 void ClassicPhaserUI::_drawPluginName()
 {
-    // TODO: Add an invisible button for "About" dialog.
-
     ImGui::BeginGroup();
 
     //
